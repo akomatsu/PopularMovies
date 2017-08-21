@@ -7,15 +7,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.ListView;
 
+import com.example.android.popularmovies.Data.Movie;
 import com.example.android.popularmovies.Network.APIUtils;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tv = null;
+    private MoviesAdapter adapter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,7 +45,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tv = (TextView) findViewById(R.id.tv_main);
+        ArrayList<Movie> movies = new ArrayList<>();
+        adapter = new MoviesAdapter(this, movies);
+
+        ListView listView = (ListView) findViewById(R.id.lv_movie_list);
+        listView.setAdapter(adapter);
+
         getMovieList("popular");
     }
 
@@ -73,16 +80,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
-            String[] movies = APIUtils.parseJSON(response);
-
-            if (movies != null) {
-                String txt = "";
-                for (String s: movies) {
-                    txt += s + "\n";
-                }
-
-                tv.setText(txt);
-            }
+            Movie[] movies = APIUtils.parseJSON(response);
+            adapter.clear();
+            adapter.addAll(movies);
+            adapter.notifyDataSetChanged();
         }
     }
 }

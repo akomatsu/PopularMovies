@@ -2,6 +2,8 @@ package com.example.android.popularmovies.Network;
 
 import android.net.Uri;
 
+import com.example.android.popularmovies.Data.Movie;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,12 +69,12 @@ public class APIUtils {
         }
     }
 
-    public static String[] parseJSON(String json) {
-        String[] movies = null;
+    public static Movie[] parseJSON(String json) {
+        Movie[] movies = null;
         try {
             JSONObject fullJson = new JSONObject(json);
             JSONArray results = fullJson.getJSONArray("results");
-            movies = new String[results.length()];
+            movies = new Movie[results.length()];
 
             for (int i = 0; i < results.length(); i++) {
                 JSONObject res = results.getJSONObject(i);
@@ -81,7 +83,7 @@ public class APIUtils {
                 long id = res.getLong("id");
                 String imgPath = res.getString("poster_path");
 
-                movies[i] = title + " | " + Long.toString(id) + " | " + imgPath;
+                movies[i] = new Movie(id, title, imgPath);
             }
         } catch (JSONException e) {
             e.printStackTrace();
