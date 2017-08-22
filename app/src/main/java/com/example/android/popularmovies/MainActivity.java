@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,17 +8,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.Toast;
 
 import com.example.android.popularmovies.Data.Movie;
-import com.example.android.popularmovies.Network.APIUtils;
+import com.example.android.popularmovies.Utils.APIUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private MoviesAdapter adapter;
+    private GridView gridView;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,10 +53,19 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Movie> movies = new ArrayList<>();
         adapter = new MoviesAdapter(this, movies);
 
-        ListView listView = (ListView) findViewById(R.id.lv_movie_list);
-        listView.setAdapter(adapter);
+        gridView = (GridView) findViewById(R.id.gv_movie_list);
+        gridView.setAdapter(adapter);
+        gridView.setOnItemClickListener(this);
 
         getMovieList("popular");
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        Movie movie = adapter.getItem(position);
+        Intent intent = new Intent(this, MovieDetailsActivity.class);
+        intent.putExtra("movie", movie);
+        startActivity(intent);
     }
 
     private void getMovieList(String mode) {
@@ -84,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             adapter.clear();
             adapter.addAll(movies);
             adapter.notifyDataSetChanged();
+            gridView.smoothScrollToPosition(0);
         }
     }
 }

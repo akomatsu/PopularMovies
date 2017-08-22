@@ -1,4 +1,4 @@
-package com.example.android.popularmovies.Network;
+package com.example.android.popularmovies.Utils;
 
 import android.net.Uri;
 
@@ -23,6 +23,7 @@ public class APIUtils {
     private static final String API_ROOT_URL = "http://api.themoviedb.org/3";
     private static final String MOVIE_POPULAR = "/movie/popular";
     private static final String MOVIE_TOP_RATED = "/movie/top_rated";
+    private final static String API_POSTER_URL = "http://image.tmdb.org/t/p/w185/";
 
     private static final String KEY_PARAMETER = "api_key";
 
@@ -48,7 +49,6 @@ public class APIUtils {
 
         return url;
     }
-
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -79,11 +79,14 @@ public class APIUtils {
             for (int i = 0; i < results.length(); i++) {
                 JSONObject res = results.getJSONObject(i);
 
-                String title = res.getString("title");
-                long id = res.getLong("id");
-                String imgPath = res.getString("poster_path");
-
-                movies[i] = new Movie(id, title, imgPath);
+                movies[i] = new Movie();
+                movies[i].setId(res.getLong("id"));
+                movies[i].setTitle(res.getString("title"));
+                movies[i].setOriginalTitle(res.getString("original_title"));
+                movies[i].setPosterPath(API_POSTER_URL + res.getString("poster_path"));
+                movies[i].setSynopsis(res.getString("overview"));
+                movies[i].setUserRating(res.getDouble("vote_average"));
+                movies[i].setReleaseDate(res.getString("release_date"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
