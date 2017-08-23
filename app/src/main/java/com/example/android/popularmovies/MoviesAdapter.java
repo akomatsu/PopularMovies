@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.example.android.popularmovies.Data.Movie;
 import com.example.android.popularmovies.Utils.ResizeTransformation;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -33,12 +34,18 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             LayoutInflater inflater =
                     (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.movie_list_item, null);
+            Picasso.with(getContext())
+                    .load(movie.getPosterPath())
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .transform(new ResizeTransformation((Activity)getContext()))
+                    .into((ImageView)convertView);
+        } else {
+            Picasso.with(getContext())
+                    .load(movie.getPosterPath())
+                    .transform(new ResizeTransformation((Activity) getContext()))
+                    .into((ImageView) convertView);
         }
 
-        Picasso.with(getContext())
-                .load(movie.getPosterPath())
-                .transform(new ResizeTransformation((Activity)getContext(), 0.5))
-                .into((ImageView)convertView);
         return convertView;
     }
 }

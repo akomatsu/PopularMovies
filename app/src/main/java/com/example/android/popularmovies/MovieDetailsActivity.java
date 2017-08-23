@@ -33,7 +33,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         tv.setText(movie.getReleaseDate());
 
         tv = (TextView) findViewById(R.id.tv_user_rating);
-        tv.setText(Double.toString(movie.getUserRating()));
+        tv.setText(Double.toString(movie.getUserRating()) + "/10");
 
         ImageView iv = (ImageView) findViewById(R.id.iv_poster);
         Picasso.with(this)
