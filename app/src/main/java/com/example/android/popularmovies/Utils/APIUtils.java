@@ -58,6 +58,7 @@ public class APIUtils {
         return url;
     }
 
+    // Code extracted from Sunshine app
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {

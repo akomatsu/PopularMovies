@@ -110,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private class FetchMoviesInfo extends AsyncTask<String, Void, String> {
 
         // Checks if there is a working internet connection
+        // Code extracted from
+        // https://stackoverflow.com/questions/1560788/how-to-check-internet-access-on-android-inetaddress-never-times-out
         private boolean isOnline() {
             ConnectivityManager cm =
                     (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
