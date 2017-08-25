@@ -1,0 +1,2 @@
+For this app to work correctly, please add your The Movie Database API Key on
+app/src/main/java/Utils/APIUtils.java file, field named API_KEY.

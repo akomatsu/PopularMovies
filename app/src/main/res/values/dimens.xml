@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_text_size">40sp</dimen>
+    <dimen name="title_area_height">100dp</dimen>
+    <dimen name="title_side_padding">15dp</dimen>
+
+    <dimen name="poster_top_margin">10dp</dimen>
+    <dimen name="poster_left_margin">5dp</dimen>
+
+    <dimen name="heading_text_size">16sp</dimen>
+    <dimen name="heading_margin_top">5dp</dimen>
+    <dimen name="heading_left_margin">10dp</dimen>
+
+    <dimen name="content_text_size">13sp</dimen>
+    <dimen name="content_left_margin">15dp</dimen>
+
+    <dimen name="synopsis_text_size">16sp</dimen>
+</resources>

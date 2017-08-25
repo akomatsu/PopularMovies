@@ -8,14 +8,12 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.example.android.popularmovies.Data.Movie;
 import com.example.android.popularmovies.Utils.APIUtils;
@@ -28,12 +26,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static final String PREFS = "PopularMoviesPrefs";
 
     private static final String SORT_ORDER = "sort_order";
-    private static final String SCROLL_POSITION = "scroll_position";
+
+    public static final String ORDER_POPULAR = "popular";
+    private static final String ORDER_TOP_RATED = "top_rated";
+
+    public static final String MOVIE_EXTRA = "movie";
 
     private MoviesAdapter adapter;
-    private GridView gridView;
     private String sortOrder;
-    private int scrollPosition;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_popular:
-                sortOrder = "popular";
+                sortOrder = ORDER_POPULAR;
                 getMovieList();
                 return true;
             case R.id.menu_top_rated:
-                sortOrder = "top_rated";
+                sortOrder = ORDER_TOP_RATED;
                 getMovieList();
                 return true;
             default:
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         ArrayList<Movie> movies = new ArrayList<>();
         adapter = new MoviesAdapter(this, movies);
 
-        gridView = (GridView) findViewById(R.id.gv_movie_list);
+        GridView gridView = (GridView) findViewById(R.id.gv_movie_list);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(this);
     }
@@ -75,10 +75,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onPause() {
         super.onPause();
 
+        // Store current sort order on shared preferences
         SharedPreferences settings = getSharedPreferences(PREFS, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(SORT_ORDER, this.sortOrder);
-        editor.putInt(SCROLL_POSITION, gridView.getFirstVisiblePosition());
         editor.apply();
     }
 
@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onResume() {
         super.onResume();
 
+        // Retrieve sort order from shared preferences
         SharedPreferences settings = getSharedPreferences(PREFS, 0);
-        this.sortOrder = settings.getString(SORT_ORDER, "popular");
-        this.scrollPosition = settings.getInt(SCROLL_POSITION, 0);
+        this.sortOrder = settings.getString(SORT_ORDER, ORDER_POPULAR);
         getMovieList();
     }
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         Movie movie = adapter.getItem(position);
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("movie", movie);
+        intent.putExtra(MOVIE_EXTRA, movie); // pass movie object to movie details screen
         startActivity(intent);
     }
 
@@ -104,15 +104,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         new FetchMoviesInfo().execute(sortOrder);
     }
 
+    /**
+     *  Async task that retrieve movie list from themoviedb servers
+     */
     private class FetchMoviesInfo extends AsyncTask<String, Void, String> {
 
+        // Checks if there is a working internet connection
         private boolean isOnline() {
             ConnectivityManager cm =
                     (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             return networkInfo != null && networkInfo.isConnectedOrConnecting();
         }
-
 
         @Override
         protected String doInBackground(String... strings) {
@@ -121,16 +124,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
 
             String listType = strings[0];
-
             try {
                 if (!isOnline()) {
                     return null;
                 }
-
                 URL url = APIUtils.buildMovieListURL(listType);
-                String response = APIUtils.getResponseFromHttpUrl(url);
-                Log.e("FetchMoviesInfo", response);
-                return response;
+                return APIUtils.getResponseFromHttpUrl(url);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -147,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             adapter.clear();
             adapter.addAll(movies);
             adapter.notifyDataSetChanged();
-            gridView.setSelection(scrollPosition); // TODO: not working....
         }
     }
 }

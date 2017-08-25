@@ -85,7 +85,7 @@ public class Movie implements Parcelable {
 
 
     // Parcelable implementation
-    public Movie(Parcel in) {
+    private Movie(Parcel in) {
         this.id = in.readLong();
         this.title = in.readString();
         this.originalTitle = in.readString();

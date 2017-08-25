@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">PopularMovies</string>
+    <string name="app_name">Popular Movies</string>
+
+    <string name="poster_description">Movie Poster</string>
+
+    <string name="heading_original_title">Original Title:</string>
+    <string name="heading_release_date">Release Date:</string>
+    <string name="heading_user_rating">User Rating:</string>
+
+    <string name="menu_entry_top_rated">Top Rated</string>
+    <string name="menu_entry_popular">Most Popular</string>
+
+    <string name="details_screen_name">Movie Details</string>
+
+    <string name="user_rating">%.1f/10</string>
 </resources>

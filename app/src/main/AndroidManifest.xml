@@ -22,7 +22,7 @@
 
         <activity
             android:name=".MovieDetailsActivity"
-            android:label="Movie Details"
+            android:label="@string/details_screen_name"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

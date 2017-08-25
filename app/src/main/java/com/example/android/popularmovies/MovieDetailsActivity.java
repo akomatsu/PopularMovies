@@ -18,7 +18,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.movie_details);
 
         Bundle data = getIntent().getExtras();
-        Movie movie = data.getParcelable("movie");
+        Movie movie = data.getParcelable(MainActivity.MOVIE_EXTRA);
 
         TextView tv = (TextView) findViewById(R.id.tv_title);
         tv.setText(movie.getTitle());
@@ -33,9 +33,14 @@ public class MovieDetailsActivity extends AppCompatActivity {
         tv.setText(movie.getReleaseDate());
 
         tv = (TextView) findViewById(R.id.tv_user_rating);
-        tv.setText(Double.toString(movie.getUserRating()) + "/10");
+        String rating = getResources().getString(R.string.user_rating);
+        tv.setText(String.format(rating, movie.getUserRating()));
 
         ImageView iv = (ImageView) findViewById(R.id.iv_poster);
+
+        // NO_CACHE: cached image (shown on movies list) have the wrong size for this screen
+        // NO_STORE: without this, cache have to be redone for the entire movies list when we
+        //          return to the movie list activity
         Picasso.with(this)
                 .load(movie.getPosterPath())
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
