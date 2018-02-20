@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/movie_details_sv"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,8 +19,9 @@
             android:paddingLeft="@dimen/title_side_padding"
             android:paddingEnd="@dimen/title_side_padding"
             android:paddingRight="@dimen/title_side_padding"
+            android:minHeight="@dimen/title_area_height"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/title_area_height" />
+            android:layout_height="wrap_content" />
 
         <!-- Poster thumbnail -->
         <ImageView
@@ -32,91 +34,150 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- Original title -->
+        <!-- Year -->
         <TextView
-            android:id="@+id/tv_original_title_heading"
-            android:text="@string/heading_original_title"
-            android:textSize="@dimen/heading_text_size"
-            android:textStyle="bold"
+            android:id="@+id/tv_year"
+            android:textSize="@dimen/year_text_size"
+            android:textStyle="normal"
             android:layout_toRightOf="@id/iv_poster"
             android:layout_toEndOf="@id/iv_poster"
             android:layout_below="@id/tv_title"
-            android:layout_marginLeft="@dimen/heading_left_margin"
-            android:layout_marginStart="@dimen/heading_left_margin"
-            android:layout_marginTop="@dimen/heading_margin_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/tv_original_title"
-            android:textSize="@dimen/content_text_size"
-            android:layout_toRightOf="@id/iv_poster"
-            android:layout_toEndOf="@id/iv_poster"
-            android:layout_below="@id/tv_original_title_heading"
             android:layout_marginLeft="@dimen/content_left_margin"
             android:layout_marginStart="@dimen/content_left_margin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <!-- Release date -->
-        <TextView
-            android:id="@+id/tv_release_date_heading"
-            android:text="@string/heading_release_date"
-            android:textSize="@dimen/heading_text_size"
-            android:textStyle="bold"
-            android:layout_toRightOf="@id/iv_poster"
-            android:layout_toEndOf="@id/iv_poster"
-            android:layout_below="@id/tv_original_title"
-            android:layout_marginLeft="@dimen/heading_left_margin"
-            android:layout_marginStart="@dimen/heading_left_margin"
-            android:layout_marginTop="@dimen/heading_margin_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/tv_release_date"
-            android:textSize="@dimen/content_text_size"
-            android:layout_toRightOf="@id/iv_poster"
-            android:layout_toEndOf="@id/iv_poster"
-            android:layout_below="@id/tv_release_date_heading"
-            android:layout_marginLeft="@dimen/content_left_margin"
-            android:layout_marginStart="@dimen/content_left_margin"
+            android:layout_marginTop="@dimen/content_top_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <!-- User rating -->
         <TextView
-            android:id="@+id/tv_user_rating_heading"
-            android:text="@string/heading_user_rating"
-            android:textSize="@dimen/heading_text_size"
+            android:id="@+id/tv_user_rating"
+            android:textSize="@dimen/rating_text_size"
+            android:textColor="@color/ratingTextColor"
             android:textStyle="bold"
             android:layout_toRightOf="@id/iv_poster"
             android:layout_toEndOf="@id/iv_poster"
-            android:layout_below="@id/tv_release_date"
-            android:layout_marginLeft="@dimen/heading_left_margin"
-            android:layout_marginStart="@dimen/heading_left_margin"
-            android:layout_marginTop="@dimen/heading_margin_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/tv_user_rating"
-            android:textSize="@dimen/content_text_size"
-            android:layout_toRightOf="@id/iv_poster"
-            android:layout_toEndOf="@id/iv_poster"
-            android:layout_below="@id/tv_user_rating_heading"
+            android:layout_below="@id/tv_year"
             android:layout_marginLeft="@dimen/content_left_margin"
             android:layout_marginStart="@dimen/content_left_margin"
+            android:layout_marginTop="@dimen/content_top_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <!-- Favorite button -->
+        <Button
+            android:id="@+id/btn_favorite"
+            android:text="@string/favorite_btn_text"
+            android:layout_toRightOf="@id/iv_poster"
+            android:layout_toEndOf="@id/iv_poster"
+            android:layout_below="@id/tv_user_rating"
+            android:layout_marginLeft="@dimen/content_left_margin"
+            android:layout_marginStart="@dimen/content_left_margin"
+            android:layout_marginTop="@dimen/content_top_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_toRightOf="@id/iv_poster"
+            android:layout_toEndOf="@id/iv_poster"
+            android:layout_below="@id/tv_user_rating"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Unfavorite button -->
+            <Button
+                android:id="@+id/btn_unfavorite"
+                android:text="@string/unfavorite_btn_text"
+                android:layout_marginLeft="@dimen/content_left_margin"
+                android:layout_marginStart="@dimen/content_left_margin"
+                android:layout_marginTop="@dimen/content_top_margin"
+                android:layout_gravity="center_horizontal|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!-- Star image -->
+            <ImageView
+                android:contentDescription="@string/star_icon_description"
+                android:id="@+id/iv_favorite_star"
+                android:src="@drawable/ic_star_black_24dp"
+                android:tint="@color/starTintColor"
+                android:layout_marginLeft="@dimen/content_left_margin"
+                android:layout_marginStart="@dimen/content_left_margin"
+                android:layout_marginTop="@dimen/content_top_margin"
+                android:layout_gravity="center_horizontal|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <!-- Synopsis -->
         <TextView
             android:id="@+id/tv_synopsis"
             android:textSize="@dimen/synopsis_text_size"
             android:layout_below="@id/iv_poster"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginTop="@dimen/synopsis_margin_top"
+            android:layout_marginLeft="@dimen/synopsis_side_margin"
+            android:layout_marginRight="@dimen/synopsis_side_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <!-- Trailers Section -->
+        <View
+            android:id="@+id/trailers_separator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/separator_thickness"
+            android:layout_below="@+id/tv_synopsis"
+            android:layout_marginLeft="@dimen/separator_side_margin"
+            android:layout_marginRight="@dimen/separator_side_margin"
+            android:layout_marginTop="@dimen/separator_top_margin"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/trailers_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_top_margin"
+            android:layout_marginLeft="@dimen/content_left_margin"
+            android:layout_marginStart="@dimen/content_left_margin"
+            android:layout_below="@id/trailers_separator"
+            android:text="@string/trailers_heading"
+            android:textSize="@dimen/trailers_heading_text_size"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_below="@id/trailers_title"/>
+
+
+        <!-- Reviews Section -->
+        <View
+            android:id="@+id/reviews_separator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/separator_thickness"
+            android:layout_below="@id/rv_trailers"
+            android:layout_marginLeft="@dimen/separator_side_margin"
+            android:layout_marginRight="@dimen/separator_side_margin"
+            android:layout_marginTop="@dimen/separator_top_margin"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/reviews_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_top_margin"
+            android:layout_marginLeft="@dimen/content_left_margin"
+            android:layout_marginStart="@dimen/content_left_margin"
+            android:layout_marginBottom="@dimen/reviews_heading_bottom_margin"
+            android:layout_below="@id/reviews_separator"
+            android:text="@string/reviews_heading"
+            android:textSize="@dimen/reviews_heading_text_size"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_below="@id/reviews_title"/>
     </RelativeLayout>
 </ScrollView>

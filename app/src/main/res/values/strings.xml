@@ -9,8 +9,25 @@
 
     <string name="menu_entry_top_rated">Top Rated</string>
     <string name="menu_entry_popular">Most Popular</string>
+    <string name="menu_entry_favorites">Favorites</string>
 
     <string name="details_screen_name">Movie Details</string>
 
     <string name="user_rating">%.1f/10</string>
+
+    <string name="content_authority">com.example.android.popularmovies</string>
+
+    <string name="loading_placeholder">Loading&#8230;</string>
+
+    <string name="no_trailers">No trailers found for this movie!</string>
+    <string name="no_reviews">No reviews found for this movie!</string>
+
+    <string name="favorite_btn_text">Mark as\n Favorite</string>
+    <string name="unfavorite_btn_text">Unfavorite\n This Movie</string>
+
+    <string name="trailers_heading">Trailers:</string>
+    <string name="reviews_heading">Reviews:</string>
+
+    <string name="trailer_icon_description">Trailer play icon</string>
+    <string name="star_icon_description">Favorite star icon</string>
 </resources>

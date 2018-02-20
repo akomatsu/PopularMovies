@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_marginBottom="30dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/author"
+        android:textColor="#000"
+        android:textSize="@dimen/review_author_text_size"
+        android:textStyle="bold|italic"
+        android:layout_marginStart="@dimen/review_author_left_margin"
+        android:layout_marginLeft="@dimen/review_author_left_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/review_text"
+        android:textSize="@dimen/review_text_size"
+        android:layout_marginLeft="@dimen/review_text_side_margin"
+        android:layout_marginStart="@dimen/review_text_side_margin"
+        android:layout_marginRight="@dimen/review_text_side_margin"
+        android:layout_marginEnd="@dimen/review_text_side_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

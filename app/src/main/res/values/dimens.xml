@@ -12,7 +12,30 @@
     <dimen name="heading_left_margin">10dp</dimen>
 
     <dimen name="content_text_size">13sp</dimen>
-    <dimen name="content_left_margin">15dp</dimen>
+    <dimen name="content_left_margin">20dp</dimen>
+    <dimen name="content_top_margin">10dp</dimen>
 
     <dimen name="synopsis_text_size">16sp</dimen>
+
+    <dimen name="year_text_size">32sp</dimen>
+    <dimen name="rating_text_size">16sp</dimen>
+    <dimen name="trailers_heading_text_size">24sp</dimen>
+    <dimen name="reviews_heading_text_size">24sp</dimen>
+    <dimen name="review_author_text_size">14sp</dimen>
+    <dimen name="review_text_size">16sp</dimen>
+
+    <dimen name="reviews_heading_bottom_margin">16dp</dimen>
+
+    <dimen name="synopsis_margin_top">10dp</dimen>
+    <dimen name="synopsis_side_margin">5dp</dimen>
+
+    <dimen name="separator_side_margin">5dp</dimen>
+    <dimen name="separator_top_margin">16dp</dimen>
+    <dimen name="separator_thickness">2dp</dimen>
+
+    <dimen name="review_author_left_margin">30dp</dimen>
+    <dimen name="review_text_side_margin">30dp</dimen>
+
+    <dimen name="trailer_title_side_margin">10dp</dimen>
+    <dimen name="trailer_icon_side_margin">30dp</dimen>
 </resources>

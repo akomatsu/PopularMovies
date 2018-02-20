@@ -7,4 +7,8 @@
     <item
         android:id="@+id/menu_popular"
         android:title="@string/menu_entry_popular" />
+
+    <item
+        android:id="@+id/menu_favorites"
+        android:title="@string/menu_entry_favorites" />
 </menu>

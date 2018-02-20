@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="titleTextColor">#FFFFFF</color>
     <color name="titleBackground">#009688</color>
+    <color name="ratingTextColor">#000000</color>
+    <color name="starTintColor">#D4AF37</color>
 </resources>

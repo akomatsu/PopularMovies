@@ -3,11 +3,13 @@ package com.example.android.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.example.android.popularmovies.ContentProvider.FavoritesContract;
 import com.example.android.popularmovies.Data.Movie;
 import com.example.android.popularmovies.Utils.APIUtils;
 
@@ -28,7 +31,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static final String SORT_ORDER = "sort_order";
 
     public static final String ORDER_POPULAR = "popular";
-    private static final String ORDER_TOP_RATED = "top_rated";
+    public static final String ORDER_TOP_RATED = "top_rated";
+    public static final String ORDER_FAVORITES = "favorites";
+
 
     public static final String MOVIE_EXTRA = "movie";
 
@@ -51,6 +56,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 return true;
             case R.id.menu_top_rated:
                 sortOrder = ORDER_TOP_RATED;
+                getMovieList();
+                return true;
+            case R.id.menu_favorites:
+                sortOrder = ORDER_FAVORITES;
                 getMovieList();
                 return true;
             default:
@@ -101,13 +110,82 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void getMovieList() {
-        new FetchMoviesInfo().execute(sortOrder);
+        if (sortOrder.equals(ORDER_FAVORITES)) {
+            new FetchMoviesInfoFromProvider().execute();
+        } else {
+            new FetchMoviesInfoFromWeb().execute(sortOrder);
+        }
+    }
+
+
+    /**
+     *  Async task that retrieves the movie list from favorites provider
+     */
+    private class FetchMoviesInfoFromProvider extends AsyncTask<Void, Void, Cursor> {
+
+        @Override
+        protected Cursor doInBackground(Void... params) {
+            String[] projection = {
+                    FavoritesContract.MovieEntry.TMDB_ID,
+                    FavoritesContract.MovieEntry.TITLE,
+                    FavoritesContract.MovieEntry.ORIGINAL_TITLE,
+                    FavoritesContract.MovieEntry.POSTER_PATH,
+                    FavoritesContract.MovieEntry.SYNOPSIS,
+                    FavoritesContract.MovieEntry.USER_RATING,
+                    FavoritesContract.MovieEntry.RELEASE_DATE
+            };
+            Cursor cursor = getContentResolver().query(
+                    FavoritesContract.MovieEntry.CONTENT_URI,
+                    projection,
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor == null) {
+                Log.e("PopularMovies", "Error getting favorites!!");
+                return null;
+            }
+
+            return cursor;
+        }
+
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            try {
+                if (cursor == null || cursor.getCount() == 0) {
+                    adapter.clear();
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Movie[] movies = new Movie[cursor.getCount()];
+                    for (int i = 0; i < cursor.getCount(); i++) {
+                        cursor.moveToNext();
+                        movies[i] = new Movie();
+                        movies[i].setId(cursor.getLong(cursor.getColumnIndex(FavoritesContract.MovieEntry.TMDB_ID)));
+                        movies[i].setTitle(cursor.getString(cursor.getColumnIndex(FavoritesContract.MovieEntry.TITLE)));
+                        movies[i].setOriginalTitle(cursor.getString(cursor.getColumnIndex(FavoritesContract.MovieEntry.ORIGINAL_TITLE)));
+                        movies[i].setPosterPath(cursor.getString(cursor.getColumnIndex(FavoritesContract.MovieEntry.POSTER_PATH)));
+                        movies[i].setSynopsis(cursor.getString(cursor.getColumnIndex(FavoritesContract.MovieEntry.SYNOPSIS)));
+                        movies[i].setUserRating(cursor.getDouble(cursor.getColumnIndex(FavoritesContract.MovieEntry.USER_RATING)));
+                        movies[i].setReleaseDate(cursor.getString(cursor.getColumnIndex(FavoritesContract.MovieEntry.RELEASE_DATE)));
+                        movies[i].setFavorite(true);
+                    }
+                    adapter.clear();
+                    adapter.addAll(movies);
+                    adapter.notifyDataSetChanged();
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
     }
 
     /**
-     *  Async task that retrieve movie list from themoviedb servers
+     *  Async task that retrieves the movie list from themoviedb servers
      */
-    private class FetchMoviesInfo extends AsyncTask<String, Void, String> {
+    private class FetchMoviesInfoFromWeb extends AsyncTask<String, Void, String> {
 
         // Checks if there is a working internet connection
         // Code extracted from
@@ -144,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 return;
             }
 
-            Movie[] movies = APIUtils.parseJSON(response);
+            Movie[] movies = APIUtils.parseMovieJSON(response);
             adapter.clear();
             adapter.addAll(movies);
             adapter.notifyDataSetChanged();

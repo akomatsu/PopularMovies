@@ -1,6 +1,5 @@
 package com.example.android.popularmovies.Data;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -23,9 +22,9 @@ public class Movie implements Parcelable {
     private String synopsis;
     private double userRating;
     private String releaseDate;
+    private boolean favorite;
 
-    public Movie() {
-    }
+    public Movie() {}
 
     public void setId(long id) {
         this.id = id;
@@ -83,6 +82,14 @@ public class Movie implements Parcelable {
         return releaseDate;
     }
 
+    public void setFavorite(boolean b) {
+        this.favorite = b;
+    }
+
+    public boolean isFavorite() {
+        return this.favorite;
+    }
+
 
     // Parcelable implementation
     private Movie(Parcel in) {
@@ -93,6 +100,7 @@ public class Movie implements Parcelable {
         this.synopsis = in.readString();
         this.userRating = in.readDouble();
         this.releaseDate = in.readString();
+        this.favorite = (in.readInt() == 1);
     }
 
     @Override
@@ -109,5 +117,6 @@ public class Movie implements Parcelable {
         parcel.writeString(this.synopsis);
         parcel.writeDouble(this.userRating);
         parcel.writeString(this.releaseDate);
+        parcel.writeInt(this.favorite ? 1 : 0);
     }
 }
